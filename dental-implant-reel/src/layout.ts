@@ -37,7 +37,7 @@ const fit = (width: number, size: number, maxWidth: number) =>
 
 export const computeLayout = (family: ActiveFamily): Layout => {
   const H1 = 120;
-  const H2 = 88;
+  const H2 = 92;
 
   const s1Line1 = fit(measure(family, 'Нет одного', H1, 500, '-0.01em'), H1, 900);
   const s1Line2 = fit(measure(family, 'зуба?', H1, 700, '-0.01em'), H1, 900);
@@ -61,5 +61,5 @@ export const computeLayout = (family: ActiveFamily): Layout => {
 export const fallbackLayout: Layout = {
   family: 'Ubuntu',
   W: { left: 470, right: 790 },
-  sizes: { s1Line1: 120, s1Line2: 120, s2: 88, s5Title: 120, s7: 88 },
+  sizes: { s1Line1: 120, s1Line2: 120, s2: 92, s5Title: 120, s7: 92 },
 };

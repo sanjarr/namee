@@ -10,10 +10,13 @@ import { font } from '../fonts';
 import { type } from '../typography';
 
 const ITEMS: { num: string; text: string; sep: number; draw: number; icon: Icon }[] = [
-  { num: '01', text: 'Соседние зубы смещаются в пустоту', sep: 520, draw: 12, icon: IconArrowsHorizontal },
-  { num: '02', text: 'Костная ткань постепенно убывает', sep: 820, draw: 42, icon: IconTrendingDown },
-  { num: '03', text: 'Нарушается прикус и нагрузка при жевании', sep: 1120, draw: 72, icon: IconDentalBroken },
+  { num: '01', text: 'Соседние зубы смещаются в пустоту', sep: 520, draw: 14, icon: IconArrowsHorizontal },
+  { num: '02', text: 'Костная ткань постепенно убывает', sep: 820, draw: 68, icon: IconTrendingDown },
+  { num: '03', text: 'Нарушается прикус и нагрузка при жевании', sep: 1120, draw: 122, icon: IconDentalBroken },
 ];
+
+// Пункты — ключевой текст сцены, поэтому крупнее обычного Body
+const ITEM_SIZE = 54;
 
 const Item: React.FC<(typeof ITEMS)[number]> = ({ num, text, sep, draw, icon }) => {
   const frame = useCurrentFrame();
@@ -28,7 +31,7 @@ const Item: React.FC<(typeof ITEMS)[number]> = ({ num, text, sep, draw, icon }) 
           top,
           fontFamily: font,
           fontWeight: 500,
-          fontSize: 64,
+          fontSize: 72,
           lineHeight: 1,
           color: colors.accent,
           opacity: n,
@@ -37,17 +40,17 @@ const Item: React.FC<(typeof ITEMS)[number]> = ({ num, text, sep, draw, icon }) 
       >
         {num}
       </div>
-      <MaskReveal delay={draw + 10} style={{ position: 'absolute', left: 240, top, width: 600 }}>
-        <div style={{ ...type.body, maxHeight: 42 * 1.35 * 2 + 2 }}>{text}</div>
+      <MaskReveal delay={draw + 10} style={{ position: 'absolute', left: 236, top: top - 4, width: 624 }}>
+        <div style={{ ...type.body, fontSize: ITEM_SIZE, maxHeight: ITEM_SIZE * type.body.lineHeight * 2 + 2 }}>{text}</div>
       </MaskReveal>
-      <IconBadge icon={icon} diameter={80} cx={920} cy={sep + 100} delay={draw + 4} />
+      <IconBadge icon={icon} diameter={84} cx={918} cy={sep + 100} delay={draw + 4} />
     </>
   );
 };
 
 // Разделители 01–03 рисует проводник (G4, G6, G8)
 export const S3Consequences: React.FC = () => (
-  <SceneExit from={132} to={144}>
+  <SceneExit from={222} to={234}>
     <AbsoluteFill>
       <CenterAt y={380}>
         <AnimatedLabel text="Что происходит" />

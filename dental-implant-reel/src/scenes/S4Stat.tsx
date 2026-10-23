@@ -16,7 +16,7 @@ export const S4Stat: React.FC = () => {
   const fadeDo = interpolate(frame, [2, 14], [0, 1], clamp);
 
   return (
-    <SceneExit from={62} to={72}>
+    <SceneExit from={132} to={144}>
       <AbsoluteFill>
         <div style={{ position: 'absolute', left: 540 - 28, top: 560 - 28, width: 56, height: 56 }}>
           <IconPop delay={0}>
@@ -29,7 +29,7 @@ export const S4Stat: React.FC = () => {
         <CenterAt y={860} style={{ ...type.stat, fontVariantNumeric: 'tabular-nums', transform: `translateY(-50%) scale(${scale})` }}>
           {Math.round(count)}%
         </CenterAt>
-        <CenterAt y={1140} style={{ ...type.body }}>
+        <CenterAt y={1150} style={{ ...type.body }}>
           <RevealWord delay={26}>
             объёма кости может уйти
             <br />в первый год после удаления зуба

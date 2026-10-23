@@ -6,9 +6,10 @@ import { clamp, colors, easeIn, easeOut } from '../theme';
 import { type } from '../typography';
 
 const PHRASES: { from: number; to: number; text: string; icon: Icon }[] = [
-  { from: 14, to: 34, text: 'Выглядит естественно', icon: IconSparkles },
-  { from: 34, to: 53, text: 'Сохраняет кость', icon: IconShieldCheck },
-  { from: 53, to: 72, text: 'Служит долгие годы', icon: IconCalendarCheck },
+  // ~1,6 с на фразу из 2–3 слов
+  { from: 14, to: 64, text: 'Выглядит естественно', icon: IconSparkles },
+  { from: 64, to: 113, text: 'Сохраняет кость', icon: IconShieldCheck },
+  { from: 113, to: 162, text: 'Служит долгие годы', icon: IconCalendarCheck },
 ];
 
 const Phrase: React.FC<(typeof PHRASES)[number]> = ({ from, to, text, icon: IconComponent }) => {
@@ -37,7 +38,7 @@ const Phrase: React.FC<(typeof PHRASES)[number]> = ({ from, to, text, icon: Icon
         <IconComponent size={56} stroke={1.5} color={colors.accent} />
       </div>
       <CenterAt
-        y={900}
+        y={930}
         style={{
           ...type.h2,
           left: 60,

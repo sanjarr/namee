@@ -19,7 +19,7 @@ export const S1Hook: React.FC<{ layout: Layout }> = ({ layout }) => {
   const lost = interpolate(frame, [36, 54], [0, 1], { ...clamp, easing: easeInOut });
 
   return (
-    <SceneExit from={62} to={72}>
+    <SceneExit from={98} to={108}>
       <AbsoluteFill>
         <CenterAt y={800} style={{ ...type.h1 }}>
           <div style={{ fontSize: layout.sizes.s1Line1 }}>

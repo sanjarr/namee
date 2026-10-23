@@ -30,7 +30,7 @@ export const S5Solution: React.FC<{ layout: Layout }> = ({ layout }) => {
   const crownCy = IMPLANT.crown.top + IMPLANT.crown.height / 2;
 
   return (
-    <SceneExit from={132} to={144}>
+    <SceneExit from={150} to={162}>
       <AbsoluteFill>
         <CenterAt y={360}>
           <AnimatedLabel
@@ -57,8 +57,12 @@ export const S5Solution: React.FC<{ layout: Layout }> = ({ layout }) => {
           })}
         </CenterAt>
 
-        <CenterAt y={620} style={{ ...type.body, color: colors.muted }}>
-          <RevealWord delay={28}>новый корень вместо утраченного зуба</RevealWord>
+        <CenterAt y={650} style={{ ...type.body, color: colors.muted }}>
+          <RevealWord delay={28}>
+            новый корень вместо
+            <br />
+            утраченного зуба
+          </RevealWord>
         </CenterAt>
 
         <Implant

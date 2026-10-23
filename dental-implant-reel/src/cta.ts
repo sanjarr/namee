@@ -1,10 +1,10 @@
 import { interpolate } from 'remotion';
-import { DURATION, clamp, easeInOut } from './theme';
+import { DURATION, at, clamp, easeInOut } from './theme';
 
-// Пульс кнопки CTA: с абс. кадра 648 каждые 36 кадров, 1→1→0 за 18 кадров.
+// Пульс кнопки CTA: с 72-го кадра сцены 7 каждые 36 кадров, 1→1.04→1 за 18 кадров.
 // Общий для кнопки (сцена 7) и контура, нарисованного проводником (G18/G20).
 export const CTA_CENTER = { x: 540, y: 1290 };
-export const CTA_PULSE_FRAMES = Array.from({ length: 4 }, (_, i) => 648 + i * 36).filter(
+export const CTA_PULSE_FRAMES = Array.from({ length: 8 }, (_, i) => at('s7', 72) + i * 36).filter(
   (f) => f < DURATION,
 );
 

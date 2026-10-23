@@ -14,7 +14,7 @@ export const type = {
   h2: {
     fontFamily: font,
     fontWeight: 400,
-    fontSize: 88,
+    fontSize: 92,
     lineHeight: 1.1,
     color: colors.ink,
   },
@@ -32,14 +32,14 @@ export const type = {
   body: {
     fontFamily: font,
     fontWeight: 400,
-    fontSize: 42,
+    fontSize: 52,
     lineHeight: 1.35,
     color: colors.ink,
   },
   label: {
     fontFamily: font,
     fontWeight: 700,
-    fontSize: 26,
+    fontSize: 34,
     textTransform: 'uppercase',
     letterSpacing: '0.28em',
     color: colors.accent,
@@ -47,7 +47,7 @@ export const type = {
   button: {
     fontFamily: font,
     fontWeight: 700,
-    fontSize: 36,
+    fontSize: 40,
     textTransform: 'uppercase',
     letterSpacing: '0.12em',
   },

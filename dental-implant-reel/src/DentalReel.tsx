@@ -10,7 +10,7 @@ import { S5Solution } from './scenes/S5Solution';
 import { S6Benefits } from './scenes/S6Benefits';
 import { S7CTA } from './scenes/S7CTA';
 import { SFX_CUES } from './sfx';
-import { clamp } from './theme';
+import { DURATION, SCENES, clamp } from './theme';
 
 export type DentalReelProps = {
   clinicName: string;
@@ -32,7 +32,7 @@ export const defaultProps: DentalReelProps = {
 
 
 const musicVolume = (f: number) =>
-  Math.min(interpolate(f, [0, 15], [0, 0.8], clamp), interpolate(f, [690, 720], [0.8, 0], clamp));
+  Math.min(interpolate(f, [0, 15], [0, 0.8], clamp), interpolate(f, [DURATION - 30, DURATION], [0.8, 0], clamp));
 
 export const DentalReel: React.FC<DentalReelProps> = ({
   clinicName,
@@ -45,29 +45,29 @@ export const DentalReel: React.FC<DentalReelProps> = ({
   <AbsoluteFill>
     <Background />
 
-    <Sequence name="S1Hook" from={0} durationInFrames={72}>
+    <Sequence name="S1Hook" from={SCENES.s1.from} durationInFrames={SCENES.s1.duration}>
       <S1Hook layout={layout} />
     </Sequence>
-    <Sequence name="S2Doubt" from={72} durationInFrames={72}>
+    <Sequence name="S2Doubt" from={SCENES.s2.from} durationInFrames={SCENES.s2.duration}>
       <S2Doubt layout={layout} />
     </Sequence>
-    <Sequence name="S3Consequences" from={144} durationInFrames={144}>
+    <Sequence name="S3Consequences" from={SCENES.s3.from} durationInFrames={SCENES.s3.duration}>
       <S3Consequences />
     </Sequence>
-    <Sequence name="S4Stat" from={288} durationInFrames={72}>
+    <Sequence name="S4Stat" from={SCENES.s4.from} durationInFrames={SCENES.s4.duration}>
       <S4Stat />
     </Sequence>
-    <Sequence name="S5Solution" from={360} durationInFrames={144}>
+    <Sequence name="S5Solution" from={SCENES.s5.from} durationInFrames={SCENES.s5.duration}>
       <S5Solution layout={layout} />
     </Sequence>
-    <Sequence name="S6Benefits" from={504} durationInFrames={72}>
+    <Sequence name="S6Benefits" from={SCENES.s6.from} durationInFrames={SCENES.s6.duration}>
       <S6Benefits />
     </Sequence>
-    <Sequence name="S7CTA" from={576} durationInFrames={144}>
+    <Sequence name="S7CTA" from={SCENES.s7.from} durationInFrames={SCENES.s7.duration}>
       <S7CTA layout={layout} clinicName={clinicName} handle={handle} keyword={keyword} />
     </Sequence>
 
-    <Sequence name="Guide" from={0} durationInFrames={720}>
+    <Sequence name="Guide" from={0} durationInFrames={DURATION}>
       <Guide W={layout.W} />
     </Sequence>
 

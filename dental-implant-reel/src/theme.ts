@@ -3,7 +3,34 @@ import { Easing } from 'remotion';
 export const WIDTH = 1080;
 export const HEIGHT = 1920;
 export const FPS = 30;
-export const DURATION = 720;
+
+// Таймлайн сцен (кадры). Длительности кратны 18 кадрам (1 бит при 100 BPM).
+// Паузы подобраны под чтение: ~3 слова в секунду плюс запас.
+const LENGTHS = {
+  s1: 108, // Хук
+  s2: 108, // Сомнение
+  s3: 234, // Последствия
+  s4: 144, // Цифра
+  s5: 162, // Решение
+  s6: 162, // Преимущества
+  s7: 162, // Призыв к действию
+} as const;
+
+export type SceneId = keyof typeof LENGTHS;
+
+export const SCENES = (Object.keys(LENGTHS) as SceneId[]).reduce(
+  (acc, id, i, ids) => {
+    const from = i === 0 ? 0 : acc[ids[i - 1]].from + acc[ids[i - 1]].duration;
+    acc[id] = { from, duration: LENGTHS[id] };
+    return acc;
+  },
+  {} as Record<SceneId, { from: number; duration: number }>,
+);
+
+// Абсолютный кадр по локальному кадру сцены
+export const at = (scene: SceneId, local: number) => SCENES[scene].from + local;
+
+export const DURATION = SCENES.s7.from + SCENES.s7.duration; // 1080 кадров = 36 с
 
 // 100 BPM → 1 бит = 18 кадров, 1 такт = 72 кадра
 export const BPM = 100;

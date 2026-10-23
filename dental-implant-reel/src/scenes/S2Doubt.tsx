@@ -8,7 +8,7 @@ import { type } from '../typography';
 
 // Зачёркивание слова «мелочь.» рисует проводник (G2, локально 20–34)
 export const S2Doubt: React.FC<{ layout: Layout }> = ({ layout }) => (
-  <SceneExit from={62} to={72}>
+  <SceneExit from={98} to={108}>
     <AbsoluteFill>
       <CenterAt y={780} style={{ ...type.body, color: colors.muted }}>
         <RevealWord delay={0}>Кажется,</RevealWord>
