@@ -78,9 +78,6 @@ export const Hud: React.FC<{ handle: string }> = ({ handle }) => {
       <div style={{ ...t.mono, position: 'absolute', left: SAFE.x0, top: 214, fontSize: 20, opacity: intro }}>
         {tc} · 1080×1920 · 30 К/С
       </div>
-      <div style={{ ...t.mono, position: 'absolute', right: 1080 - SAFE.x1, top: 214, fontSize: 20, opacity: intro }}>
-        КАДР {pad(frame, 4)} / {D_DURATION}
-      </div>
 
       {/* Ник слева, таймер-кольцо справа */}
       <div
