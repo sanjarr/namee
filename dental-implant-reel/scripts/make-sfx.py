@@ -194,8 +194,44 @@ def chime():
     return normalize(reverb(lowpass(y, 7000), 1.8, 0.4), -6)
 
 
+# impact — глубокий мягкий удар: суб-бас, шумовой всплеск, короткий хвост
+def impact():
+    t = t_axis(1.4)
+    f = 32 + 90 * np.exp(-t / 0.05)
+    boom = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.35)
+    burst = lowpass(rng.standard_normal(len(t)), 2600) * np.exp(-t / 0.09) * 0.55
+    body = np.sin(2 * np.pi * 96 * t) * np.exp(-t / 0.12) * 0.4
+    y = boom + burst + body
+    return normalize(reverb(y, 1.2, 0.18), -4)
+
+
+# type — едва слышный щелчок клавиши
+def type_key():
+    t = t_axis(0.09)
+    y = lowpass(highpass(rng.standard_normal(len(t)), 1800), 6500) * np.exp(-t / 0.008)
+    y += 0.5 * np.sin(2 * np.pi * 1300 * t) * np.exp(-t / 0.01)
+    return normalize(y, -9)
+
+
+# riser — нарастание: шум + восходящий тон
+def riser(sec=1.6):
+    n = int(SR * sec)
+    t = np.arange(n) / SR
+    u = t / sec
+    noise = highpass(rng.standard_normal(n), 1200)
+    noise = lowpass(noise, 800 + 7000 * u ** 2)
+    f = 180 * (12 ** u)
+    tone = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.35
+    y = (noise * 0.8 + tone) * (u ** 2.2)
+    y *= np.minimum(1, (sec - t) / 0.02)
+    return normalize(reverb(y, 0.6, 0.15), -6)
+
+
 if __name__ == '__main__':
     for name, fn in [
+        ('impact', impact),
+        ('type', type_key),
+        ('riser', riser),
         ('shimmer', shimmer),
         ('whoosh', whoosh),
         ('sparkle', sparkle),
