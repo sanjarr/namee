@@ -8,9 +8,9 @@ const TAIL = 240;
 const SLICES = 8;
 
 const LAYERS = [
-  { key: 'halo', width: 18, color: colors.goldLight, opacity: 0.4, filter: 'url(#glow-halo)' },
-  { key: 'mid', width: 6, color: colors.gold, opacity: 0.7, filter: 'url(#glow-mid)' },
-  { key: 'core', width: 3, color: colors.goldDeep, opacity: 1, filter: undefined },
+  { key: 'halo', width: 18, color: colors.glow, opacity: 0.4, filter: 'url(#glow-halo)' },
+  { key: 'mid', width: 6, color: colors.accent, opacity: 0.7, filter: 'url(#glow-mid)' },
+  { key: 'core', width: 3, color: colors.accentDeep, opacity: 1, filter: undefined },
 ] as const;
 
 type LayerKey = (typeof LAYERS)[number]['key'];
@@ -129,7 +129,7 @@ export const GlowFilters: React.FC = () => (
       <feGaussianBlur stdDeviation={2} />
     </filter>
     <filter id="spark-glow" filterUnits="userSpaceOnUse" x={-200} y={-200} width={1480} height={2320}>
-      <feDropShadow dx={0} dy={0} stdDeviation={1.5} floodColor={colors.goldDeep} floodOpacity={0.45} />
+      <feDropShadow dx={0} dy={0} stdDeviation={1.5} floodColor={colors.accentDeep} floodOpacity={0.45} />
     </filter>
   </defs>
 );

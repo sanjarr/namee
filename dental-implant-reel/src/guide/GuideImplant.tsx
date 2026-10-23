@@ -29,7 +29,7 @@ export const GuideImplant: React.FC<{
         width: 90,
         height: 90,
         borderRadius: '50%',
-        background: `radial-gradient(circle, ${colors.goldLight} 0%, ${colors.goldLight}00 70%)`,
+        background: `radial-gradient(circle, ${colors.glow} 0%, ${colors.glow}00 70%)`,
         opacity: haloOpacity,
         transform: `scale(${haloScale})`,
       }}
@@ -67,7 +67,7 @@ export const GuideImplant: React.FC<{
       <path
         d="M1.5 9 C1.5 3 5 1.5 9 2.5 C12 3.2 13.5 3.8 16 2.8 C18.5 3.8 20 3.2 23 2.5 C27 1.5 30.5 3 30.5 9 C30.5 16 28 21 24 26 L8 26 C4 21 1.5 16 1.5 9 Z"
         fill={colors.surface}
-        stroke={colors.gold}
+        stroke={colors.accent}
         strokeWidth={1.5}
         strokeLinejoin="round"
       />

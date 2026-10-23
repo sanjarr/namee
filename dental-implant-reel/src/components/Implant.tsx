@@ -42,8 +42,33 @@ const crownPath = () => {
   ].join(' ');
 };
 
+// Грани бриллианта на коронке — отсылка к знаку «32 КАРАТА» (зуб-бриллиант)
+const crownFacets = () => {
+  const { top, width: w } = IMPLANT.crown;
+  const l = IMPLANT.cx - w / 2;
+  const gy = top + 80;
+  const G = [0, 45, 85, 115, 145, 185, 230].map((x) => [l + x, gy + (x === 115 ? 4 : 0)]);
+  const T = [
+    [l + 30, top + 26],
+    [l + 68, top + 10],
+    [l + 115, top + 14],
+    [l + 162, top + 10],
+    [l + 200, top + 26],
+  ];
+  const culet = [IMPLANT.cx, top + 205];
+  const pairs: [number[], number[]][] = [
+    [T[0], G[0]], [T[0], G[1]], [T[1], G[1]], [T[1], G[2]], [T[2], G[2]], [T[2], G[3]],
+    [T[2], G[4]], [T[3], G[4]], [T[3], G[5]], [T[4], G[5]], [T[4], G[6]],
+    [T[0], T[1]], [T[1], T[2]], [T[2], T[3]], [T[3], T[4]],
+    ...[1, 2, 3, 4, 5].map((i) => [G[i], culet] as [number[], number[]]),
+    [G[0], [l + 40, top + 150]], [G[6], [l + w - 40, top + 150]],
+  ];
+  const girdle = `M${G.map((p) => p.join(' ')).join(' L')}`;
+  return `${girdle} ${pairs.map(([a, b]) => `M${a[0]} ${a[1]} L${b[0]} ${b[1]}`).join(' ')}`;
+};
+
 export const Implant: React.FC<{ parts: ImplantParts }> = ({ parts }) => {
-  const { cx, crown, abutment, screw, gum } = IMPLANT;
+  const { cx, abutment, screw, gum } = IMPLANT;
   const threads = Array.from({ length: 9 }, (_, i) => {
     const y = screw.top + 15 + i * 30;
     const w = screw.topW + ((screw.bottomW - screw.topW) * (y - screw.top)) / screw.height;
@@ -73,6 +98,9 @@ export const Implant: React.FC<{ parts: ImplantParts }> = ({ parts }) => {
           <stop offset="0" stopColor={colors.surface} />
           <stop offset="1" stopColor="#F2F4F6" />
         </linearGradient>
+        <clipPath id="crown-clip">
+          <path d={crownPath()} />
+        </clipPath>
         <filter id="crown-shadow" x="-30%" y="-30%" width="160%" height="160%">
           <feDropShadow dx="0" dy="20" stdDeviation="20" floodColor="#12263A" floodOpacity="0.08" />
         </filter>
@@ -131,15 +159,14 @@ export const Implant: React.FC<{ parts: ImplantParts }> = ({ parts }) => {
           strokeWidth={3}
           filter="url(#crown-shadow)"
         />
-        {/* Блик */}
         <path
-          d={`M${cx - 82} ${crown.top + 60} C${cx - 80} ${crown.top + 34} ${cx - 60} ${
-            crown.top + 24
-          } ${cx - 36} ${crown.top + 28}`}
+          d={crownFacets()}
           fill="none"
-          stroke={colors.ice}
-          strokeWidth={10}
+          stroke={colors.glow}
+          strokeWidth={3}
           strokeLinecap="round"
+          strokeLinejoin="round"
+          clipPath="url(#crown-clip)"
         />
       </g>
     </svg>

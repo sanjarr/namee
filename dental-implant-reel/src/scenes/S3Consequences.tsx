@@ -27,10 +27,10 @@ const Item: React.FC<(typeof ITEMS)[number]> = ({ num, text, sep, draw, icon }) 
           left: 120,
           top,
           fontFamily: font,
-          fontWeight: 300,
+          fontWeight: 500,
           fontSize: 64,
           lineHeight: 1,
-          color: colors.gold,
+          color: colors.accent,
           opacity: n,
           transform: `translateX(${-40 * (1 - n)}px)`,
         }}

@@ -37,7 +37,7 @@ export const S5Solution: React.FC<{ layout: Layout }> = ({ layout }) => {
             text="Решение"
             before={
               <IconPop delay={0}>
-                <IconDental size={36} stroke={1.5} color={colors.gold} />
+                <IconDental size={36} stroke={1.5} color={colors.accent} />
               </IconPop>
             }
           />
@@ -77,7 +77,7 @@ export const S5Solution: React.FC<{ layout: Layout }> = ({ layout }) => {
             cy={crownCy}
             r={150 * (0.8 + 0.8 * wave)}
             fill="none"
-            stroke={colors.gold}
+            stroke={colors.accent}
             strokeWidth={2}
             opacity={frame >= 70 ? 0.8 * (1 - wave) : 0}
           />

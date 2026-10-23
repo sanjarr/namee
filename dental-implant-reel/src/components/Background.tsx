@@ -29,6 +29,6 @@ const Spot: React.FC<{
 export const Background: React.FC = () => (
   <AbsoluteFill style={{ backgroundColor: colors.bg, overflow: 'hidden' }}>
     <Spot color={colors.ice} diameter={1400} from={[900, 300]} to={[780, 460]} />
-    <Spot color={colors.champagne} diameter={1200} from={[150, 1650]} to={[280, 1480]} />
+    <Spot color={colors.mist} diameter={1100} from={[150, 1650]} to={[280, 1480]} />
   </AbsoluteFill>
 );

@@ -15,7 +15,7 @@ export const RemotionRoot: React.FC = () => (
     defaultProps={defaultProps}
     calculateMetadata={async ({ props }) => {
       // Мерим текст (границы «мелочь.» для проводника, кегли заголовков)
-      // только после загрузки Erbaum или фолбэка
+      // только после загрузки шрифта Ubuntu
       const family = await fontsReady;
       const layout = computeLayout(family);
       return { props: { ...props, layout } satisfies DentalReelProps };

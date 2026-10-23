@@ -5,7 +5,7 @@ import { colors } from './theme';
 export const type = {
   h1: {
     fontFamily: font,
-    fontWeight: 300,
+    fontWeight: 500,
     fontSize: 120,
     lineHeight: 1.05,
     letterSpacing: '-0.01em',
@@ -13,7 +13,7 @@ export const type = {
   },
   h2: {
     fontFamily: font,
-    fontWeight: 300,
+    fontWeight: 400,
     fontSize: 88,
     lineHeight: 1.1,
     color: colors.ink,
@@ -23,11 +23,11 @@ export const type = {
     fontWeight: 300,
     fontSize: 300,
     lineHeight: 1,
-    color: colors.gold,
+    color: colors.accent,
   },
   accent: {
-    fontWeight: 500,
-    color: colors.gold,
+    fontWeight: 700,
+    color: colors.accent,
   },
   body: {
     fontFamily: font,
@@ -38,15 +38,15 @@ export const type = {
   },
   label: {
     fontFamily: font,
-    fontWeight: 500,
+    fontWeight: 700,
     fontSize: 26,
     textTransform: 'uppercase',
     letterSpacing: '0.28em',
-    color: colors.gold,
+    color: colors.accent,
   },
   button: {
     fontFamily: font,
-    fontWeight: 500,
+    fontWeight: 700,
     fontSize: 36,
     textTransform: 'uppercase',
     letterSpacing: '0.12em',

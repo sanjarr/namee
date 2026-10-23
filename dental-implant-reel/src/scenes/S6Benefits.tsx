@@ -34,7 +34,7 @@ const Phrase: React.FC<(typeof PHRASES)[number]> = ({ from, to, text, icon: Icon
           transform: `scale(${(0.6 + 0.4 * pop) * (1 - 0.4 * iconExit)}) rotate(${-10 * (1 - pop)}deg)`,
         }}
       >
-        <IconComponent size={56} stroke={1.5} color={colors.gold} />
+        <IconComponent size={56} stroke={1.5} color={colors.accent} />
       </div>
       <CenterAt
         y={900}

@@ -1,11 +1,10 @@
 import { IconBrandInstagram, IconSend } from '@tabler/icons-react';
-import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from 'remotion';
 import { ctaScale } from '../cta';
 import { IconPop } from '../components/IconPop';
 import { LineDraw } from '../components/LineDraw';
 import { CenterAt } from '../components/Positioned';
 import { RevealWord } from '../components/RevealWord';
-import { font } from '../fonts';
 import type { Layout } from '../layout';
 import { clamp, colors, easeOut } from '../theme';
 import { type } from '../typography';
@@ -13,6 +12,9 @@ import { type } from '../typography';
 const SCENE_START = 576;
 const CARD = { x: 80, y: 520, w: 920, h: 880 };
 const BTN = { x: 180, y: 1230, w: 720, h: 120 };
+// Исходник логотипа 650 × 144 px, на экране — 520 px по ширине
+const LOGO_W = 520;
+const LOGO_RATIO = 144 / 650;
 
 export const S7CTA: React.FC<{ layout: Layout; clinicName: string; handle: string; keyword: string }> = ({
   layout,
@@ -34,20 +36,20 @@ export const S7CTA: React.FC<{ layout: Layout; clinicName: string; handle: strin
 
   return (
     <AbsoluteFill>
-      <CenterAt
-        y={300}
+      {/* Официальный горизонтальный логотип (брендбук, «Версии логотипа»).
+          Над ним и вокруг — свободное поле, без сложной графики. */}
+      <Img
+        src={staticFile('brand/logo-horizontal.png')}
+        alt={clinicName}
         style={{
-          fontFamily: font,
-          fontWeight: 500,
-          fontSize: 32,
-          letterSpacing: '0.3em',
-          color: colors.ink,
+          position: 'absolute',
+          left: 540 - LOGO_W / 2,
+          top: 300 - (LOGO_W * LOGO_RATIO) / 2,
+          width: LOGO_W,
           opacity: fade(0, 16),
-          textIndent: '0.3em',
+          transform: `translateY(${12 * (1 - fade(0, 16))}px)`,
         }}
-      >
-        {clinicName}
-      </CenterAt>
+      />
 
       <div
         style={{
@@ -82,7 +84,7 @@ export const S7CTA: React.FC<{ layout: Layout; clinicName: string; handle: strin
           delay={34}
           width={120}
           height={2}
-          color={colors.gold}
+          color={colors.accent}
           style={{ position: 'absolute', left: CARD.w / 2 - 60, top: inCard(960) - 1 }}
         />
 
@@ -136,7 +138,7 @@ export const S7CTA: React.FC<{ layout: Layout; clinicName: string; handle: strin
               <IconSend size={40} stroke={1.5} color="#FFFFFF" />
             </IconPop>
             <span style={{ ...type.button, color: '#FFFFFF', opacity: content, whiteSpace: 'nowrap' }}>
-              {`НАПИСАТЬ «${keyword}»`}
+              НАПИСАТЬ <span style={{ color: colors.yellow }}>«{keyword}»</span>
             </span>
           </div>
         </div>

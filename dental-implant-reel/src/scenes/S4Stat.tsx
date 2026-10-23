@@ -20,7 +20,7 @@ export const S4Stat: React.FC = () => {
       <AbsoluteFill>
         <div style={{ position: 'absolute', left: 540 - 28, top: 560 - 28, width: 56, height: 56 }}>
           <IconPop delay={0}>
-            <IconHourglass size={56} stroke={1.5} color={colors.gold} />
+            <IconHourglass size={56} stroke={1.5} color={colors.accent} />
           </IconPop>
         </div>
         <CenterAt y={640} style={{ ...type.body, color: colors.muted, opacity: fadeDo }}>

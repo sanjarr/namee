@@ -2,8 +2,8 @@ import { measureText } from '@remotion/layout-utils';
 import type { ActiveFamily } from './fonts';
 
 // Измерения текста, которые нужны до рендера: границы слова «мелочь.»
-// для проводника (сцена 2) и ужатые кегли заголовков, чтобы широкий
-// Erbaum не вылезал за безопасную зону x 80…1000.
+// для проводника (сцена 2) и ужатые кегли заголовков, чтобы они
+// не вылезали за безопасную зону x 80…1000.
 export type Layout = {
   family: ActiveFamily;
   W: { left: number; right: number };
@@ -39,19 +39,19 @@ export const computeLayout = (family: ActiveFamily): Layout => {
   const H1 = 120;
   const H2 = 88;
 
-  const s1Line1 = fit(measure(family, 'Нет одного', H1, 300, '-0.01em'), H1, 900);
-  const s1Line2 = fit(measure(family, 'зуба?', H1, 500, '-0.01em'), H1, 900);
-  const s5Title = fit(measure(family, 'Имплантация', H1, 300, '-0.01em'), H1, 900);
-  const s2 = fit(measure(family, 'это мелочь.', H2, 300), H2, 840);
+  const s1Line1 = fit(measure(family, 'Нет одного', H1, 500, '-0.01em'), H1, 900);
+  const s1Line2 = fit(measure(family, 'зуба?', H1, 700, '-0.01em'), H1, 900);
+  const s5Title = fit(measure(family, 'Имплантация', H1, 500, '-0.01em'), H1, 900);
+  const s2 = fit(measure(family, 'это мелочь.', H2, 400), H2, 840);
   const s7 = Math.min(
-    fit(measure(family, 'Верните улыбке', H2, 300), H2, 780),
-    fit(measure(family, 'целостность', H2, 500), H2, 780),
+    fit(measure(family, 'Верните улыбке', H2, 400), H2, 780),
+    fit(measure(family, 'целостность', H2, 700), H2, 780),
   );
 
   // Строка «это мелочь.» центрирована по x = 540, поэтому правая граница
   // слова — правый край строки, а левая — правый край минус ширина слова.
-  const total = measure(family, 'это мелочь.', s2, 300);
-  const word = measure(family, 'мелочь.', s2, 300);
+  const total = measure(family, 'это мелочь.', s2, 400);
+  const word = measure(family, 'мелочь.', s2, 400);
   const right = 540 + total / 2;
   const left = right - word;
 
@@ -59,7 +59,7 @@ export const computeLayout = (family: ActiveFamily): Layout => {
 };
 
 export const fallbackLayout: Layout = {
-  family: 'Manrope',
+  family: 'Ubuntu',
   W: { left: 470, right: 790 },
   sizes: { s1Line1: 120, s1Line2: 120, s2: 88, s5Title: 120, s7: 88 },
 };

@@ -9,6 +9,7 @@ import { S4Stat } from './scenes/S4Stat';
 import { S5Solution } from './scenes/S5Solution';
 import { S6Benefits } from './scenes/S6Benefits';
 import { S7CTA } from './scenes/S7CTA';
+import { SFX_CUES } from './sfx';
 import { clamp } from './theme';
 
 export type DentalReelProps = {
@@ -22,18 +23,13 @@ export type DentalReelProps = {
 };
 
 export const defaultProps: DentalReelProps = {
-  clinicName: 'НАЗВАНИЕ КЛИНИКИ',
-  handle: '@clinic_handle',
+  clinicName: '32 КАРАТА',
+  handle: '@32karata.kg',
   keyword: 'ИМПЛАНТ',
   withMusic: false,
-  withSfx: false,
+  withSfx: true,
 };
 
-const SFX: { file: string; frames: number[] }[] = [
-  { file: 'sfx/shimmer.mp3', frames: [56, 476] },
-  { file: 'sfx/whoosh.mp3', frames: [64, 134, 276, 346, 566] },
-  { file: 'sfx/sparkle.mp3', frames: [506, 600] },
-];
 
 const musicVolume = (f: number) =>
   Math.min(interpolate(f, [0, 15], [0, 0.8], clamp), interpolate(f, [690, 720], [0.8, 0], clamp));
@@ -77,13 +73,11 @@ export const DentalReel: React.FC<DentalReelProps> = ({
 
     {withMusic ? <Audio src={staticFile('music.mp3')} volume={musicVolume} /> : null}
     {withSfx
-      ? SFX.flatMap(({ file, frames }) =>
-          frames.map((f) => (
-            <Sequence key={`${file}-${f}`} from={f} layout="none">
-              <Audio src={staticFile(file)} />
-            </Sequence>
-          )),
-        )
+      ? SFX_CUES.map(({ at, sfx, volume, rate }) => (
+          <Sequence key={`${sfx}-${at}`} name={`sfx ${sfx}`} from={at} layout="none">
+            <Audio src={staticFile(`sfx/${sfx}.mp3`)} volume={volume} playbackRate={rate ?? 1} />
+          </Sequence>
+        ))
       : null}
   </AbsoluteFill>
 );

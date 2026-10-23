@@ -10,21 +10,31 @@ export const BPM = 100;
 export const BEAT = 18;
 export const BAR = 72;
 
+// Палитра «32 КАРАТА» (брендбук): Sapphire #04254E, Indigo Crayola #5D80D8,
+// Immature yellow #DEFF5C, White. Остальные — производные оттенки.
+export const brand = {
+  sapphire: '#04254E',
+  indigo: '#5D80D8',
+  yellow: '#DEFF5C',
+  white: '#FFFFFF',
+};
+
 export const colors = {
-  bg: '#F8F7F4',
-  surface: '#FFFFFF',
-  ink: '#12263A',
-  muted: '#8A97A3',
-  gold: '#B89B72', // основной акцент
-  goldLight: '#E9D6B2', // ореол свечения
-  goldDeep: '#9C7F55', // ядро линии на светлом фоне
-  ice: '#DCE9EE',
-  champagne: '#EFE6D8',
-  line: '#E3E7EA',
-  titanium: '#AEB8C1',
-  thread: '#97A3AE',
-  abutment: '#C7CED4',
-  gum: '#F1DCD6',
+  bg: '#F6F8FD',
+  surface: brand.white,
+  ink: brand.sapphire,
+  muted: '#7A89A6',
+  accent: brand.indigo, // основной акцент
+  glow: '#C4D2F6', // ореол свечения
+  accentDeep: '#4767C4', // ядро линии на светлом фоне
+  yellow: brand.yellow, // точечный акцент: искры, ключевое слово в кнопке
+  ice: '#DFE7FB',
+  mist: '#E9EEFB', // второе мягкое пятно внизу
+  line: '#E0E6F2',
+  titanium: '#AEB8C6',
+  thread: '#94A1B4',
+  abutment: '#C6CEDA',
+  gum: '#F3DCDA',
 };
 
 export const easeOut = Easing.bezier(0.16, 1, 0.3, 1);

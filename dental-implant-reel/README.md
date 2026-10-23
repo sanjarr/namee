@@ -1,6 +1,7 @@
 # DentalImplantReel — моушен-ролик «Имплантация зуба»
 
-Remotion + TypeScript, 1080 × 1920, 30 fps, 720 кадров (24 с). Собран по ТЗ v2.
+Remotion + TypeScript, 1080 × 1920, 30 fps, 720 кадров (24 с). Собран по ТЗ v2
+в фирменном стиле стоматологии «32 КАРАТА».
 
 ```bash
 npm install
@@ -8,16 +9,23 @@ npm run studio   # npx remotion studio
 npm run render   # npx remotion render DentalImplantReel out/dental-implant-reel.mp4 --codec=h264 --crf=18
 ```
 
-## Шрифт
-Положите купленные файлы Erbaum в `public/fonts/`: `Erbaum-Light.otf`, `Erbaum-Book.otf`,
-`Erbaum-Medium.otf`, `Erbaum-Bold.otf`. Если их нет, текст набирается Manrope (Google Fonts),
-а в консоль выводится предупреждение. Кегли заголовков и границы слова «мелочь.» для
-проводника измеряются в `calculateMetadata` уже после загрузки шрифта, поэтому смена шрифта
-ничего не ломает.
+## Фирменный стиль «32 КАРАТА»
+По брендбуку: палитра Sapphire `#04254E` (текст, кнопка), Indigo Crayola `#5D80D8`
+(акценты, светящаяся линия), Immature yellow `#DEFF5C` (только точечно: искры и ключевое
+слово в кнопке), White. Шрифт — Ubuntu (Google Fonts). Цвета — `src/theme.ts`,
+стили текста — `src/typography.ts`.
 
-## Музыка и звуки
-`public/music.mp3` (prop `withMusic`), `public/sfx/shimmer.mp3`, `whoosh.mp3`, `sparkle.mp3`
-(prop `withSfx`). Текст — `clinicName`, `handle`, `keyword` — в `defaultProps` (`src/DentalReel.tsx`).
+Логотип стоит только в финальной сцене (горизонтальная версия, `public/brand/`). Он вырезан
+из страницы «Версии логотипа» брендбука, с прозрачным фоном и в точном цвете Indigo; рядом
+лежат варианты Sapphire и White. Если есть вектор (SVG/AI), лучше заменить им.
+
+## Звук
+`withSfx: true` по умолчанию. Звуки синтезированы кодом, лицензия не нужна:
+`python3 scripts/make-sfx.py` пересоздаёт `public/sfx/*.mp3`. Таблица «кадр → звук → громкость»
+лежит в `src/sfx.ts`. Микс тихий (около −26 LUFS, пик −12 dBFS), чтобы сверху легла музыка:
+положите трек в `public/music.mp3` и включите `withMusic`.
+
+Тексты и ник (`clinicName`, `handle`, `keyword`) задаются в `defaultProps` (`src/DentalReel.tsx`).
 
 ## Устройство
 - `src/guide/legs.ts` — таблица сегментов проводника G0–G20 (раздел 5.3 ТЗ).
@@ -29,7 +37,9 @@ npm run render   # npx remotion render DentalImplantReel out/dental-implant-reel
 - **Орбита G16** — 1,5 оборота вместо одного: только так она заканчивается в нижней точке
   (540, 796), с которой начинается G17, и проводник не «телепортируется».
 - Во время пульса кнопки контур G18 масштабируется вместе с кнопкой, чтобы совпадать с ней.
-- Заголовки автоматически ужимаются, если широкий Erbaum не помещается в безопасную зону.
+- Заголовки автоматически ужимаются, если не помещаются в безопасную зону.
+- Шрифт Erbaum и золотая палитра из ТЗ заменены на фирменные (Ubuntu, Sapphire/Indigo);
+  на коронке в сцене 5 появились грани бриллианта, как в знаке клиники.
 - Строка «это мелочь.» поднята на 0.1em, чтобы зачёркивание на y = 900 шло по центру строчных букв.
 
 > Цифру «до 25% в первый год» перед публикацией согласуйте с врачом клиники.

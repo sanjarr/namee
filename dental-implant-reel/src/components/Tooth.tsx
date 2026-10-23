@@ -44,7 +44,7 @@ export const ToothGhost: React.FC<{ x: number; cy: number; opacity: number }> = 
       height={TOOTH_H - 3}
       rx={38.5}
       fill="none"
-      stroke={colors.gold}
+      stroke={colors.accent}
       strokeWidth={3}
       strokeDasharray="10 10"
     />
