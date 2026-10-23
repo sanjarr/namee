@@ -43,7 +43,7 @@ const Item: React.FC<(typeof ITEMS)[number]> = ({ num, text, sep, draw, icon }) 
       <MaskReveal delay={draw + 10} style={{ position: 'absolute', left: 236, top: top - 4, width: 624 }}>
         <div style={{ ...type.body, fontSize: ITEM_SIZE, maxHeight: ITEM_SIZE * type.body.lineHeight * 2 + 2 }}>{text}</div>
       </MaskReveal>
-      <IconBadge icon={icon} diameter={84} cx={918} cy={sep + 100} delay={draw + 4} />
+      <IconBadge icon={icon} diameter={108} cx={924} cy={sep + 108} delay={draw + 4} />
     </>
   );
 };

@@ -34,7 +34,7 @@ export const IconBadge: React.FC<{
       }}
     >
       <IconPop delay={delay + 4}>
-        <IconComponent size={diameter * 0.45} stroke={1.5} color={color} />
+        <IconComponent size={diameter * 0.52} stroke={1.5} color={color} />
       </IconPop>
     </div>
   );

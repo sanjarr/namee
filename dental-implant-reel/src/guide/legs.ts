@@ -9,7 +9,7 @@ type Base = { id: string; start: number; end: number };
 export type Leg =
   | (Base & { kind: 'appear'; at: Pt; spring: 'bounce' | 'soft'; flash?: boolean })
   | (Base & { kind: 'fly'; path: string })
-  | (Base & { kind: 'draw'; path: string; livesUntil: [number, number] | null; pulse?: boolean })
+  | (Base & { kind: 'draw'; path: string; livesUntil: [number, number] | null; pulse?: boolean; weight?: number })
   | (Base & { kind: 'morph'; at: Pt; toScale: number })
   | (Base & { kind: 'vanish'; at: Pt });
 
@@ -47,15 +47,16 @@ const CIRCLE = 'M540 660 A60 60 0 1 1 540 780 A60 60 0 1 1 540 660';
 // Кадры задаются от начала сцены через at(сцена, кадр) — так паузы на
 // чтение меняются в одном месте (SCENES в theme.ts), а проводник не рвётся.
 export const buildLegs = (W: WordBounds): Leg[] => {
-  const wl = W.left - 24;
-  const wr = W.right + 24;
+  // Зачёркивание: чуть шире слова, но не заходит на «это»
+  const wl = W.left - 10;
+  const wr = W.right + 14;
   const orbit = { start: at('s6', 20), end: at('s6', 152) };
   return [
     // Сцена 1: имплантат рождается в пустом месте и ждёт, пока прочитают вопрос
     { id: 'G0', kind: 'appear', start: at('s1', 56), end: at('s1', 64), at: [540, 1180], spring: 'bounce', flash: true },
     { id: 'G1', kind: 'fly', start: at('s1', 100), end: at('s2', 20), path: `M540 1180 C540 1040 300 1010 ${wl} 900` },
     // Сцена 2: зачёркивание «мелочь.»
-    { id: 'G2', kind: 'draw', start: at('s2', 20), end: at('s2', 34), path: `M${wl} 900 L${wr} 900`, livesUntil: [at('s2', 98), at('s2', 108)] },
+    { id: 'G2', kind: 'draw', start: at('s2', 20), end: at('s2', 34), path: `M${wl} 900 L${wr} 900`, livesUntil: [at('s2', 98), at('s2', 108)], weight: 2.4 },
     // Сцена 3: три разделителя, между ними — паузы на чтение пунктов
     { id: 'G3', kind: 'fly', start: at('s2', 98), end: at('s3', 14), path: `M${wr} 900 C900 640 360 420 120 520` },
     { id: 'G4', kind: 'draw', start: at('s3', 14), end: at('s3', 28), path: 'M120 520 L960 520', livesUntil: [at('s3', 222), at('s3', 234)] },

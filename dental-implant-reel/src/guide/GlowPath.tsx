@@ -92,6 +92,7 @@ export const GlowPath: React.FC<{ leg: PathLeg; frame: number }> = ({ leg, frame
     mid: Math.max(0.7 * glow, 0.6 * pulse) * core,
     core,
   };
+  const weight = leg.weight ?? 1;
   const s = leg.pulse ? ctaScale(frame) : 1;
   const transform =
     s !== 1
@@ -107,8 +108,8 @@ export const GlowPath: React.FC<{ leg: PathLeg; frame: number }> = ({ leg, frame
             total={total}
             from={0}
             to={head}
-            width={layer.width}
-            color={layer.color}
+            width={layer.width * weight}
+            color={layer.key === 'core' && weight > 1 ? colors.accent : layer.color}
             opacity={layerOpacity[layer.key]}
             cap="round"
           />
