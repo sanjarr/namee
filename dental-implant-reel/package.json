@@ -1,0 +1,27 @@
+{
+  "name": "dental-implant-reel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remotion: моушен-ролик «Имплантация зуба», 9:16",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render DentalImplantReel out/dental-implant-reel.mp4 --codec=h264 --crf=18",
+    "still": "remotion still DentalImplantReel out/frame.png --frame=719",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.538",
+    "@remotion/fonts": "^4.0.538",
+    "@remotion/google-fonts": "^4.0.538",
+    "@remotion/layout-utils": "^4.0.538",
+    "@remotion/paths": "^4.0.538",
+    "@tabler/icons-react": "^3.49.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.538"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^5.9.3"
+  }
+}
