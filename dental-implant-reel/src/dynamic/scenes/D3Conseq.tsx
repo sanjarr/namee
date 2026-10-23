@@ -7,18 +7,30 @@ import { mono } from '../../fonts';
 const PANEL = { x: 90, y: 470, w: 900, h: 520 };
 const PART = 110;
 
-const TOOTH = { w: 100, h: 132, r: 38 };
+// Силуэт моляра в рамке 100 × 150: коронка с двумя буграми и два корня
+const TOOTH_PATH =
+  'M12 10 C22 0 38 2 50 10 C62 2 78 0 88 10 C100 22 100 48 92 66 C88 76 86 90 84 110 ' +
+  'C82 132 76 148 68 148 C60 148 58 126 56 108 C55 98 53 92 50 92 C47 92 45 98 44 108 ' +
+  'C42 126 40 148 32 148 C24 148 18 132 16 110 C14 90 12 76 8 66 C0 48 0 22 12 10 Z';
 
-const toothBox = (cx: number, cy: number, rot = 0, opacity = 0.92) => (
-  <rect
-    x={cx - TOOTH.w / 2}
-    y={cy - TOOTH.h / 2}
-    width={TOOTH.w}
-    height={TOOTH.h}
-    rx={TOOTH.r}
-    fill="#FFFFFF"
+const Tooth: React.FC<{
+  cx: number;
+  cy: number;
+  rot?: number;
+  scale?: number;
+  flip?: boolean;
+  fill?: string;
+  opacity?: number;
+  dashed?: boolean;
+}> = ({ cx, cy, rot = 0, scale = 1, flip = false, fill = '#FFFFFF', opacity = 0.94, dashed = false }) => (
+  <path
+    d={TOOTH_PATH}
+    transform={`translate(${cx} ${cy}) rotate(${rot}) scale(${scale} ${flip ? -scale : scale}) translate(-50 -75)`}
+    fill={dashed ? 'none' : fill}
+    stroke={dashed ? D.lime : undefined}
+    strokeWidth={dashed ? 3 / scale : undefined}
+    strokeDasharray={dashed ? `${10 / scale} ${10 / scale}` : undefined}
     opacity={opacity}
-    transform={`rotate(${rot} ${cx} ${cy})`}
   />
 );
 
@@ -29,23 +41,13 @@ const VizShift: React.FC = () => {
   const cy = 280;
   return (
     <>
-      {toothBox(110 + 20 * p, cy)}
-      {toothBox(250 + 62 * p, cy, 13 * p)}
-      <rect
-        x={450 - 55 * (1 - 0.45 * p)}
-        y={cy - 66}
-        width={110 * (1 - 0.45 * p)}
-        height={132}
-        rx={36}
-        fill="none"
-        stroke={D.lime}
-        strokeWidth={3}
-        strokeDasharray="10 10"
-      />
-      {toothBox(650 - 62 * p, cy, -13 * p)}
-      {toothBox(790 - 20 * p, cy)}
-      <path d="M325 400 h60 m-14 -14 l14 14 l-14 14" stroke={D.lime} strokeWidth={4} fill="none" opacity={p} strokeLinecap="round" />
-      <path d="M575 400 h-60 m14 -14 l-14 14 l14 14" stroke={D.lime} strokeWidth={4} fill="none" opacity={p} strokeLinecap="round" />
+      <Tooth cx={110 + 20 * p} cy={cy} />
+      <Tooth cx={250 + 62 * p} cy={cy} rot={13 * p} />
+      <Tooth cx={450} cy={cy} dashed scale={1 - 0.3 * p} opacity={0.9} />
+      <Tooth cx={650 - 62 * p} cy={cy} rot={-13 * p} />
+      <Tooth cx={790 - 20 * p} cy={cy} />
+      <path d="M325 410 h60 m-14 -14 l14 14 l-14 14" stroke={D.lime} strokeWidth={4} fill="none" opacity={p} strokeLinecap="round" />
+      <path d="M575 410 h-60 m14 -14 l-14 14 l14 14" stroke={D.lime} strokeWidth={4} fill="none" opacity={p} strokeLinecap="round" />
     </>
   );
 };
@@ -57,14 +59,14 @@ const VizBone: React.FC = () => {
   const d = 64 * p;
   return (
     <>
-      {toothBox(110, 215, 0, 0.92)}
-      {toothBox(250, 215, 0, 0.92)}
-      {toothBox(650, 215, 0, 0.92)}
-      {toothBox(790, 215, 0, 0.92)}
+      {/* Корни уходят в кость: зубы рисуем под ней */}
+      {[110, 250, 650, 790].map((x) => (
+        <Tooth key={x} cx={x} cy={300} />
+      ))}
       <path
-        d={`M70 450 V330 H250 C330 330 360 ${330 + d} 450 ${330 + d} C540 ${330 + d} 570 330 650 330 H830 V450 Z`}
+        d={`M70 470 V330 H250 C330 330 360 ${330 + d} 450 ${330 + d} C540 ${330 + d} 570 330 650 330 H830 V470 Z`}
         fill="#E8EEF9"
-        opacity={0.9}
+        opacity={0.88}
       />
       <line x1={70} x2={830} y1={330} y2={330} stroke={D.lime} strokeWidth={2.5} strokeDasharray="8 8" opacity={0.9} />
       <path d={`M450 336 V${330 + d - 6} m-10 -12 l10 12 l10 -12`} stroke={D.lime} strokeWidth={4} fill="none" strokeLinecap="round" opacity={p} />
@@ -80,12 +82,13 @@ const VizBite: React.FC = () => {
   const miss = Math.floor(frame / 6) % 2 === 0;
   return (
     <>
+      {/* Верхний ряд — корнями вверх, нижний — корнями вниз */}
       {xs.map((x) => (
-        <rect key={`u${x}`} x={x - 56} y={190} width={112} height={90} rx={26} fill="#FFFFFF" opacity={0.92} />
+        <Tooth key={`u${x}`} cx={x} cy={230} scale={0.8} flip />
       ))}
-      <g transform={`translate(${34 * p} ${-8 * p}) rotate(${2.5 * p} 450 380)`}>
+      <g transform={`translate(${34 * p} ${-6 * p}) rotate(${2.5 * p} 450 370)`}>
         {xs.map((x) => (
-          <rect key={`l${x}`} x={x - 56} y={312} width={112} height={90} rx={26} fill="#C9D6F2" opacity={0.95} />
+          <Tooth key={`l${x}`} cx={x} cy={360} scale={0.8} fill="#C9D6F2" opacity={0.96} />
         ))}
       </g>
       <g opacity={p} transform="translate(450 296)">
