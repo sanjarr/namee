@@ -74,7 +74,8 @@ export const Center: React.FC<{ y: number; style?: CSSProperties; children: Reac
   </div>
 );
 
-// Строка выезжает из-под маски (translateY 110% → 0), на выходе уезжает вверх
+// Строка выезжает из-под маски (translateY 140% → 0), на выходе уезжает вверх.
+// До своего кадра строка не рисуется: иначе надстрочные знаки (Ё, Й) выглядывают из-под маски.
 export const Mask: React.FC<{
   delay: number;
   exitAt?: number;
@@ -85,12 +86,14 @@ export const Mask: React.FC<{
   const frame = useCurrentFrame();
   const enter = prog(frame, delay, dur);
   const exit = exitAt === undefined ? 0 : prog(frame, exitAt, 8, easeIn);
+  const hidden = frame < delay || exit >= 1;
   return (
     <div style={{ overflow: 'hidden', padding: '0.14em 0', margin: '-0.14em 0', ...style }}>
       <div
         style={{
-          transform: `translateY(${(1 - enter) * 110 - exit * 110}%)`,
+          transform: `translateY(${(1 - enter) * 140 - exit * 140}%)`,
           opacity: 1 - exit * 0.6,
+          visibility: hidden ? 'hidden' : 'visible',
         }}
       >
         {children}
@@ -153,7 +156,8 @@ export const Slab: React.FC<{
               fontSize: size,
               color: D.ink,
               lineHeight: 1,
-              transform: `translateY(${(1 - prog(frame, delay + 5, 12)) * 105}%)`,
+              transform: `translateY(${(1 - prog(frame, delay + 5, 12)) * 140}%)`,
+              visibility: frame < delay + 5 ? 'hidden' : 'visible',
             }}
           >
             {text}
