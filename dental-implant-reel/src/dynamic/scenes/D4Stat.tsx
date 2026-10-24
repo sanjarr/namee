@@ -84,9 +84,9 @@ export const D4Stat: React.FC = () => {
 
         <Center y={1330} style={{ ...t.head, fontSize: 54, lineHeight: 1.2 }}>
           <Mask delay={72}>ОБЪЁМА КОСТИ МОЖЕТ УЙТИ</Mask>
-          <div style={{ marginTop: 8 }}>
-            <Hl delay={92}>В ПЕРВЫЙ ГОД</Hl>
-          </div>
+          <Mask delay={82} style={{ marginTop: 8 }}>
+            <Hl delay={94}>В ПЕРВЫЙ ГОД</Hl>
+          </Mask>
         </Center>
         <Center y={1480} style={{ ...t.mono, fontSize: 21, opacity: prog(frame, 110, 12) }}>
           * ЗНАЧЕНИЕ УТОЧНИТЕ У ВРАЧА

@@ -32,7 +32,9 @@ export const D6Was: React.FC = () => {
         })}
 
         <Center y={930} style={{ ...t.head, fontSize: 56 }}>
-          <Hl delay={76}>СТАЛО:</Hl>
+          <Mask delay={72}>
+            <Hl delay={78}>СТАЛО:</Hl>
+          </Mask>
         </Center>
         <Center y={1090} style={{ ...t.head, fontSize: 118 }}>
           <Mask delay={88}>ПОСТАВИЛИ,</Mask>
