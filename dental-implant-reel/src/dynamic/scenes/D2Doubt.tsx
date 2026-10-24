@@ -18,7 +18,7 @@ export const D2Doubt: React.FC = () => {
   return (
     <SceneExit from={DS.doubt.duration - 8} to={DS.doubt.duration}>
       <AbsoluteFill>
-        <Center y={520} style={{ ...t.label, fontSize: 36 }}>
+        <Center y={515} style={{ ...t.label, fontSize: 58, letterSpacing: '0.16em', textShadow: `0 0 30px ${D.glow}` }}>
           <Mask delay={0}>ЧТО МЫ ДУМАЕМ:</Mask>
         </Center>
 

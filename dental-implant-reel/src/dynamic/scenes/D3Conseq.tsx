@@ -169,7 +169,7 @@ export const D3Conseq: React.FC = () => {
   return (
     <SceneExit from={DS.conseq.duration - 8} to={DS.conseq.duration}>
       <AbsoluteFill>
-        <Center y={405} style={{ ...t.label, fontSize: 36 }}>
+        <Center y={410} style={{ ...t.label, fontSize: 58, letterSpacing: '0.16em', textShadow: `0 0 30px ${D.glow}` }}>
           <Mask delay={0}>НА САМОМ ДЕЛЕ:</Mask>
         </Center>
 
