@@ -52,11 +52,34 @@ export const D8Cta: React.FC<{ keyword: string; handle: string; clinicName: stri
             boxShadow: `0 0 40px ${D.glow}`,
           }}
         >
-          <div style={{ fontFamily: mono, fontWeight: 700, fontSize: 52, color: D.white, flex: 1, letterSpacing: '0.04em' }}>
-            <Typed segs={[{ text: keyword }]} delay={84} cps={9} />
+          {/* Слово — по центру всего поля; кнопка вынесена из потока вправо */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: mono,
+              fontWeight: 700,
+              fontSize: 52,
+              color: D.white,
+              letterSpacing: '0.04em',
+            }}
+          >
+            {/* Курсор держим вне потока, чтобы слово не съезжало при наборе */}
+            <span style={{ position: 'relative' }}>
+              <Typed segs={[{ text: keyword }]} delay={84} cps={9} cursor={false} />
+              <span style={{ position: 'absolute', left: '100%', top: 0 }}>
+                <Typed segs={[{ text: '' }]} delay={84} />
+              </span>
+            </span>
           </div>
           <div
             style={{
+              position: 'absolute',
+              right: 26,
+              top: (BOX.h - 78) / 2 - 2,
               width: 78,
               height: 78,
               borderRadius: '50%',
