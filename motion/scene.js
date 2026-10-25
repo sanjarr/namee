@@ -117,7 +117,7 @@ function build() {
   A = { l1: fit('КРАСНАЯ', 'black', COL), l2: fit('ЦЕНА', 'black', COL, 350), ei: L('ЕЙ', 'medium', LBL), bylo: L('БЫЛО', 'medium', LBL) };
   B = { num: fit('50', 'black', COL, 560), l2: fit('ТЫСЯЧ', 'black', COL), ne: L('НЕ', 'medium', LBL), bolee: L('БОЛЕЕ', 'medium', LBL) };
   C = { i: L('И', 'bold', 100), l1: fit('ОТДАВАТЬ', 'black', COL, 180) };
-  C.ee = L('ЕЁ', 'black', C.l1.size); C.za = L('ЗА', 'black', C.l1.size); C.kop = fit('КОПЕЙКИ', 'black', COL, 250);
+  C.ee = L('ЕЁ', 'black', C.l1.size); C.za = L('ЗА', 'black', C.l1.size); C.kop = fit('КОПЕЙКИ', 'black', COL, 250); C.bylo = L('БЫЛО', 'medium', LBL);
   D = { bylo: L('БЫЛО', 'medium', LBL), kap: fit('КАПЕЦ', 'black', COL, 290), kak: L('КАК', 'bold', 124), zh: fit('ЖАЛКО', 'black', COL, 290) };
   const dotsW = 3 * 36 + 2 * 18 + 28;
   F = { l1: fit('ТОГДА', 'black', COL, 330), l2: fit('В ГОЛОВУ', 'black', COL - dotsW, 210) };
@@ -196,14 +196,15 @@ function sceneB(t) {
   });
 }
 
-// C: И / ОТДАВАТЬ / ЕЁ ЗА / КОПЕЙКИ   (2.94 - 4.42)
+// C: И / ОТДАВАТЬ / ЕЁ ЗА / КОПЕЙКИ / БЫЛО   (2.94 - 4.62)
 function sceneC(t) {
-  if (t < 2.94 || t > 4.44) return;
-  const { i, l1, ee, za, kop } = C;
-  const g = 30, total = i.cap + g + l1.cap + g + ee.cap + g * 1.3 + kop.cap;
-  const y0 = H / 2 - total / 2 + i.cap, y1 = y0 + g + l1.cap, y2 = y1 + g + ee.cap, y3 = y2 + g * 1.3 + kop.cap;
-  const exit = E.inExpo(prog(t, 4.2, 0.2));
-  const drift = prog(t, 3.0, 1.4);
+  if (t < 2.94 || t > 4.64) return;
+  const { i, l1, ee, za, kop, bylo } = C;
+  const g = 30, total = i.cap + g + l1.cap + g + ee.cap + g * 1.3 + kop.cap + g * 1.3 + bylo.cap;
+  const y0 = H / 2 - total / 2 + i.cap, y1 = y0 + g + l1.cap, y2 = y1 + g + ee.cap, y3 = y2 + g * 1.3 + kop.cap, y4 = y3 + g * 1.3 + bylo.cap;
+  // held until КАПЕЦ so КОПЕЙКИ stays readable
+  const exit = E.inExpo(prog(t, 4.42, 0.2));
+  const drift = prog(t, 3.0, 1.6);
   xf({ x: -1500 * exit, s: 1.0 + 0.05 * E.outCubic(drift), r: 0.012 * drift }, () => {
     const sp = spring(t, 2.96, 2.4, 0.42);
     drawLine(i, MARGIN, y0, INK, { letter: () => ({ s: sp, a: clamp(sp * 3) }) });
@@ -214,22 +215,23 @@ function sceneC(t) {
     const rots = [-0.5, 0.35, -0.25, 0.45, -0.4, 0.3, -0.35];
     drawLine(kop, MARGIN, y3, RED, {
       letter: k => {
-        const p = prog(t, 3.82 + k * 0.035, 0.62);
+        const p = prog(t, 3.78 + k * 0.025, 0.5);
         if (p <= 0) return { a: 0 };
         const b = E.outBounce(p);
-        return { dy: -(1 - b) * 1100, r: rots[k] * (1 - E.outCubic(p)), a: 1 };
+        return { dy: -(1 - b) * 1000, r: rots[k] * (1 - E.outCubic(p)), a: 1 };
       },
     });
+    drawLine(bylo, MARGIN, y4, INK, { mask: true, letter: rise(t, 4.24, bylo, 0.03, 0.45) });
   });
 }
 
-// D: БЫЛО / КАПЕЦ / КАК / ЖАЛКО   (4.22 - 6.28)
+// D: БЫЛО / КАПЕЦ / КАК / ЖАЛКО   (4.48 - 6.28)
 function sceneD(t) {
-  if (t < 4.22 || t > 6.3) return;
+  if (t < 4.48 || t > 6.3) return;
   const { bylo, kap, kak, zh } = D;
   const g = 34, total = bylo.cap + g + kap.cap + g * 1.2 + kak.cap + g + zh.cap;
   const y0 = H / 2 - total / 2 + bylo.cap, y1 = y0 + g + kap.cap, y2 = y1 + g * 1.2 + kak.cap, y3 = y2 + g + zh.cap;
-  const enter = 1500 * (1 - E.outExpo(prog(t, 4.3, 0.4)));
+  const enter = 1500 * (1 - E.outExpo(prog(t, 4.5, 0.34)));
   // impact shake when КАПЕЦ lands
   const st = t - 4.74;
   const shake = st > 0 ? Math.exp(-st * 9) : 0;
@@ -237,7 +239,7 @@ function sceneD(t) {
   const fall = E.inCubic(prog(t, 6.02, 0.26));
   const pulse = 1 + 0.035 * shake;
   xf({ x: enter + sx, y: sy + 2400 * fall, s: pulse * (1 + 0.04 * prog(t, 4.3, 1.8)), r: 0.004 * shake * Math.sin(st * 60) + 0.12 * fall }, () => {
-    drawLine(bylo, MARGIN, y0, INK, { mask: true, letter: rise(t, 4.24, bylo, 0.03, 0.45) });
+    drawLine(bylo, MARGIN, y0, INK);
     const k = E.outExpo(prog(t, 4.62, 0.22));
     const kapS = 1 + 2.4 * (1 - k);
     xf({ s: kapS, ox: MARGIN + kap.w / 2, oy: y1 - kap.cap / 2 }, () => {
