@@ -3,7 +3,7 @@
 // Chroma-key green background so the text can be keyed over footage.
 
 const W = 1080, H = 1920, FPS = 60, DURATION = 38.6;
-const RED = '#E30613', INK = '#0D0D0D', BG = '#00FF00';
+const RED = '#E30613', INK = '#FFFFFF', BG = '#00FF00';
 const MARGIN = 130, COL = W - MARGIN * 2;
 const FAM = { black: 'GPBlack', bold: 'GPBold', medium: 'GPMedium' };
 // size classes: weight + max cap height (lines are also fitted to the column width)
