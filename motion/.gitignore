@@ -1,3 +1,4 @@
 fonts/
 out/frames/
 out/*.png
+out/*.log
