@@ -5,6 +5,8 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const W = 1080, H = 1920, FPS = 60, DURATION = 7.0;
+// ?alpha -> transparent background (for compositing in After Effects)
+const ALPHA = new URLSearchParams(location.search).has('alpha');
 const S = 0.01; // logo px -> world units
 const CX = 540, CY = 540;
 
@@ -85,7 +87,7 @@ function bgTexture() {
 async function build() {
   const data = await (await fetch('logo_32karata.json')).json();
   scene = new THREE.Scene();
-  scene.background = bgTexture();
+  scene.background = ALPHA ? null : bgTexture();
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environmentIntensity = 0.9;
@@ -255,14 +257,15 @@ let acc, px, out, octx;
 window.init = async () => {
   const cv = document.getElementById('c');
   cv.width = W; cv.height = H;
-  renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: false, preserveDrawingBuffer: true });
+  renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: false, preserveDrawingBuffer: true, alpha: ALPHA, premultipliedAlpha: true });
+  renderer.setClearColor(0x000000, ALPHA ? 0 : 1);
   renderer.setPixelRatio(1);
   renderer.setSize(W, H, false);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   await build();
-  acc = new Float32Array(W * H * 3);
+  acc = new Float32Array(W * H * 4);
   px = new Uint8Array(W * H * 4);
   out = document.createElement('canvas');
   out.width = W; out.height = H;
@@ -280,16 +283,18 @@ window.renderFrame = async (f, samples = 12, shutter = 0.6) => {
     camera.setViewOffset(W, H, rnd(k, 21) - 0.5, rnd(k, 22) - 0.5, W, H);
     renderer.render(scene, camera);
     gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, px);
-    for (let p = 0, q = 0; p < px.length; p += 4, q += 3) {
-      acc[q] += px[p]; acc[q + 1] += px[p + 1]; acc[q + 2] += px[p + 2];
-    }
+    // the drawing buffer is premultiplied, so averaging here blurs colour and alpha together correctly
+    for (let p = 0; p < px.length; p++) acc[p] += px[p];
   }
   const img = octx.createImageData(W, H), o = img.data, inv = 1 / samples;
   for (let y = 0; y < H; y++) {
     // readPixels is bottom-up
-    let q = (H - 1 - y) * W * 3, p = y * W * 4;
-    for (let x = 0; x < W; x++, q += 3, p += 4) {
-      o[p] = acc[q] * inv + 0.5; o[p + 1] = acc[q + 1] * inv + 0.5; o[p + 2] = acc[q + 2] * inv + 0.5; o[p + 3] = 255;
+    let q = (H - 1 - y) * W * 4, p = y * W * 4;
+    for (let x = 0; x < W; x++, q += 4, p += 4) {
+      const a = ALPHA ? acc[q + 3] * inv : 255;
+      // PNG wants straight alpha: un-premultiply
+      const u = a > 0.5 ? 255 / a : 0;
+      o[p] = acc[q] * inv * u + 0.5; o[p + 1] = acc[q + 1] * inv * u + 0.5; o[p + 2] = acc[q + 2] * inv * u + 0.5; o[p + 3] = a + 0.5;
     }
   }
   octx.putImageData(img, 0, 0);

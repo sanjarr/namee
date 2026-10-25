@@ -61,6 +61,14 @@ const NAME = opt('--name', 'kinetic_typography_60fps');
   server.close();
 
   const dur = (total / 60).toFixed(4);
+  if (args.includes('--prores')) {
+    // ProRes 4444 with alpha: imports straight into After Effects / Premiere / DaVinci
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '60', '-i', path.join(FRAMES, 'f%04d.png'),
+      '-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-alpha_bits', '16', '-vendor', 'apl0',
+      path.join(OUT, NAME + '.mov')], { stdio: 'inherit' });
+    console.log('done:', path.join(OUT, NAME + '.mov'));
+    return;
+  }
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '60', '-i', path.join(FRAMES, 'f%04d.png'),
     ...(opt('--audio', 'voice.wav') === 'none' ? [] : ['-i', path.join(__dirname, opt('--audio', 'voice.wav')), '-af', 'apad']), '-t', dur,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-pix_fmt', 'yuv420p', '-r', '60',

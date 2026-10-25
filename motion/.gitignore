@@ -3,3 +3,4 @@ out/frames/
 out/*.png
 out/*.log
 node_modules/
+out/*.mov
