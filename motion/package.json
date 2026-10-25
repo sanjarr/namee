@@ -1,0 +1,15 @@
+{
+  "name": "motion",
+  "version": "1.0.0",
+  "description": "9:16, 1080×1920, 60 fps, motion blur (48 sub-frame samples, 0.6-frame shutter), white background, Gotham Pro Black / Bold / Medium, accent words in red.",
+  "main": "render.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.186.1"
+  }
+}

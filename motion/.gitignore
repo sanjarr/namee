@@ -2,3 +2,4 @@ fonts/
 out/frames/
 out/*.png
 out/*.log
+node_modules/

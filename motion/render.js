@@ -1,7 +1,7 @@
 // Renders index.html frame by frame (headless Chromium) and muxes with voice.wav.
 // usage: node render.js [--page index.html] [--audio voice.wav] [--name out_name] [--preview t1,t2,...] [--workers N] [--samples N]
 const { chromium } = require('playwright');
-const fs = require('fs'), path = require('path'), { execFileSync } = require('child_process');
+const fs = require('fs'), path = require('path'), http = require('http'), { execFileSync } = require('child_process');
 
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d; };
@@ -10,12 +10,22 @@ const FRAMES = path.join(OUT, 'frames');
 const NAME = opt('--name', 'kinetic_typography_60fps');
 
 (async () => {
-  const browser = await chromium.launch({ args: ['--allow-file-access-from-files'] });
-  const url = 'file://' + path.join(__dirname, opt('--page', 'index.html'));
+  // pages are served over http so ES modules (three.js) load
+  const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.otf': 'font/otf', '.png': 'image/png' };
+  const server = http.createServer((req, res) => {
+    const f = path.join(__dirname, decodeURIComponent(req.url.split('?')[0]));
+    if (!f.startsWith(__dirname) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end(); }
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(f)] || 'application/octet-stream' });
+    fs.createReadStream(f).pipe(res);
+  }).listen(0, '127.0.0.1');
+  await new Promise(r => server.once('listening', r));
+  const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const url = `http://127.0.0.1:${server.address().port}/` + opt('--page', 'index.html');
   const open = async () => {
     const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
     page.on('pageerror', e => console.error('page error:', e));
     await page.goto(url);
+    await page.waitForFunction(() => typeof window.init === 'function');
     const info = await page.evaluate(() => init());
     return { page, info };
   };
@@ -24,10 +34,11 @@ const NAME = opt('--name', 'kinetic_typography_60fps');
   if (preview) {
     const { page, info } = await open();
     for (const t of preview.split(',').map(Number)) {
-      const b64 = await page.evaluate(([f]) => renderFrame(f, 8), [Math.round(t * info.FPS)]);
+      const b64 = await page.evaluate(([f, s]) => renderFrame(f, s), [Math.round(t * info.FPS), +opt('--samples', 4)]);
       fs.writeFileSync(path.join(OUT, `preview_${t.toFixed(2).padStart(5, '0')}.png`), Buffer.from(b64, 'base64'));
     }
     await browser.close();
+    server.close();
     return;
   }
 
@@ -47,12 +58,13 @@ const NAME = opt('--name', 'kinetic_typography_60fps');
     }
   }));
   await browser.close();
+  server.close();
 
   const dur = (total / 60).toFixed(4);
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', '60', '-i', path.join(FRAMES, 'f%04d.png'),
-    '-i', path.join(__dirname, opt('--audio', 'voice.wav')), '-af', 'apad', '-t', dur,
+    ...(opt('--audio', 'voice.wav') === 'none' ? [] : ['-i', path.join(__dirname, opt('--audio', 'voice.wav')), '-af', 'apad']), '-t', dur,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-pix_fmt', 'yuv420p', '-r', '60',
     '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709',
-    '-c:a', 'aac', '-b:a', '320k', '-movflags', '+faststart', path.join(OUT, NAME + '.mp4')], { stdio: 'inherit' });
+    ...(opt('--audio', 'voice.wav') === 'none' ? [] : ['-c:a', 'aac', '-b:a', '320k']), '-movflags', '+faststart', path.join(OUT, NAME + '.mp4')], { stdio: 'inherit' });
   console.log('done:', path.join(OUT, NAME + '.mp4'));
 })();
